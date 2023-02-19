@@ -32,8 +32,8 @@ function getGallery(event) {
         createGalleryMarkup(images);
         console.log(images);
       }
+    });
 }
-
 function createGalleryMarkup(images) {
   const galleryMarkup = images
     .map(image => {
