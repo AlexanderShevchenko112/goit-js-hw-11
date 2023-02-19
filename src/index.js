@@ -1,24 +1,30 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
 import axios from 'axios';
-import fetchImages from './fetch-images.js';
 
-const formEl = document.getElementById('search-form');
-const searchBtn = document.querySelector(`button`);
-const loadmoreBtn = document.querySelector(`.load-more`);
-const gallery = document.querySelector(`.gallery`);
+const formEl = document.getElementById(`search-form`);
+const searchBtn = document.querySelector('button');
+const loadmoreBtn = document.querySelector('.load-more');
+const gallery = document.querySelector('.gallery');
 
-let searchQuery = ``;
+function fetchImages(name) {
+  const API_KEY = `33764189-9b4498a919581aaa78e0499bc`;
+  const BASE_URL = `https://pixabay.com/api/?key=${API_KEY}&per-page=40&q=${name}&image_type=photo&orientation=horizontal&safesearch=true`;
+  return fetch(`${BASE_URL}&page=${page}`);
+}
 
-formEl.addEventListener(`submit`, getGallery);
+let query = ``;
+let page = 1;
+
+formEl.addEventListener('submit', getGallery);
 
 function getGallery(event) {
   event.preventDeafault();
   const form = event.currentTarget;
-  searchQuery = form.elements.searchQuery.value.trim();
-  console.log(searchQuery);
+  query = form.elements.searchQuery.value.trim();
+  console.log(query);
 
-  fetchImages(searchQuery)
+  fetchImages(query)
     .then(response => {
       return response.json();
     })
@@ -32,6 +38,9 @@ function getGallery(event) {
         createGalleryMarkup(images);
         console.log(images);
       }
+    })
+    .catch(error => {
+      console.log(error);
     });
 }
 function createGalleryMarkup(images) {
@@ -56,7 +65,7 @@ function createGalleryMarkup(images) {
       </div> `;
     })
     .join(``);
-  gallery.innerHTML = galleryMarkup;
+  gallery.insertAdjacentHTML = galleryMarkup;
 }
 
 function resetGallery() {
