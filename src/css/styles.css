@@ -46,3 +46,13 @@ body {
   cursor: pointer;
   border-color: rgb(33, 73, 204);
 }
+
+.info {
+  display: flex;
+  gap: 20px;
+}
+.info-item {
+  margin: 0;
+  color: rgb(30, 30, 112);
+  font-style: italic;
+}

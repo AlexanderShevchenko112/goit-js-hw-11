@@ -1,6 +1,8 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
 import axios from 'axios';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const formEl = document.getElementById(`search-form`);
 const loadmoreBtn = document.querySelector('.load-more');
@@ -53,9 +55,21 @@ async function getGallery(event) {
 
 function createGalleryMarkup(arr) {
   const galleryMarkup = arr
-    .map(({ webformatURL, tags, likes, views, comments, downloads }) => {
-      return `<div class="photo-card">
+    .map(
+      ({
+        webformatURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+        largeImageURL,
+      }) => {
+        return `
+        <div class="photo-card">
+        <a class="gallery-item" href=${largeImageURL}>
         <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </a>
         <div class="info">
           <p class="info-item">
             <b>Likes: ${likes}</b>
@@ -71,16 +85,32 @@ function createGalleryMarkup(arr) {
           </p>
         </div>
       </div> `;
-    })
+      }
+    )
     .join(``);
   gallery.innerHTML = galleryMarkup;
+  new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
 }
 
 function updateGalleryMarkup(arr) {
   const galleryMarkup = arr
-    .map(({ webformatURL, tags, likes, views, comments, downloads }) => {
-      return `<div class="photo-card">
+    .map(
+      ({
+        webformatURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+        largeImageURL,
+      }) => {
+        return `<div class="photo-card">
+      <a class="gallery-item" href=${largeImageURL}>
         <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </a>
         <div class="info">
           <p class="info-item">
             <b>Likes: ${likes}</b>
@@ -96,9 +126,14 @@ function updateGalleryMarkup(arr) {
           </p>
         </div>
       </div> `;
-    })
+      }
+    )
     .join(``);
   gallery.insertAdjacentHTML('beforeend', galleryMarkup);
+  new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
 }
 
 function resetGallery() {
@@ -115,12 +150,3 @@ async function loadMore() {
     console.log(error);
   }
 }
-
-// const { height: cardHeight } = document
-//   .querySelector('.gallery')
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: 'smooth',
-// });
