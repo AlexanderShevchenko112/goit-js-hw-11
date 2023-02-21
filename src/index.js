@@ -20,6 +20,7 @@ let page = 1;
 formEl.addEventListener('submit', getGallery);
 
 async function getGallery(event) {
+  page = 1;
   event.preventDefault();
   const form = event.currentTarget;
   query = form.elements.searchQuery.value.trim();
